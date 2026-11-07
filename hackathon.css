@@ -1,0 +1,1696 @@
+/* ==========================================================================
+   1. BASE STYLES & UNIVERSAL RESET
+   ========================================================================== */
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  background: #f5f7fa;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* ==========================================================================
+   2. CARDS & CONTENT LAYOUTS
+   ========================================================================== */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .07);
+  max-width: 420px;
+  width: 100%;
+  padding: 2rem 2.5rem;
+  transition: background 0.3s ease;
+}
+
+.policy {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .07);
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem 2.5rem;
+  margin: 0 auto;
+  transition: background 0.3s ease;
+}
+
+.profile-card {
+  background: white;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   3. FORMS, INPUTS & PASSWORD STRENGTH INDICATOR
+   ========================================================================== */
+form label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+input[type=text],
+input[type=email],
+input[type=password] {
+  width: 100%;
+  padding: .6rem .8rem;
+  margin-top: .4rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #222;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.checkbox {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+
+#strength {
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  cursor: pointer;
+  color: #111827;
+  z-index: 2;
+}
+
+.toggle-password:hover {
+  opacity: 0.8;
+}
+
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+  pointer-events: none;
+}
+
+.dark-mode .toggle-password {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   4. GLOBAL BUTTONS & ALERTS
+   ========================================================================== */
+button,
+.back-btn {
+  width: 100%;
+  padding: .75rem;
+  margin-top: .8rem;
+  border: none;
+  border-radius: 6px;
+  background: #0066cc;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s ease;
+}
+
+button:hover,
+.back-btn:hover {
+  background: #0052a3;
+}
+
+.success {
+  color: #0a8754;
+  margin-top: .75rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   5. NAVIGATION HEADERS & PREMIUM TWO-LEVEL TOPBAR
+   ========================================================================== */
+header {
+  background: #0066cc;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  padding: 12px 30px !important;
+  width: 100% !important;
+  height: 65px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  background: #ffffff;
+  transition: background 0.3s ease;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.topbar-left,
+.profile {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+.travel-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 22px;
+  padding: 12px;
+  max-width: 850px;
+  margin: 18px auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+.travel-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 150px;
+  height: 78px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #222;
+  transition: .25s;
+}
+
+.travel-tab:hover {
+  background: #eef5ff;
+  color: #0066ff;
+}
+
+.travel-tab.active {
+  background: #0066ff;
+  color: white;
+}
+
+.travel-tab svg {
+  width: 28px;
+  height: 28px;
+}
+
+.topbar-theme-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: 38px !important;
+  padding: 0 16px !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+  background-color: #e9ecef !important;
+  color: #0066cc !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 20px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.topbar-theme-btn:hover {
+  transform: translateY(-1px) !important;
+  background-color: #0066cc !important;
+  color: #ffffff !important;
+  border-color: #0052a3 !important;
+  box-shadow: 0 4px 10px rgba(0, 102, 204, 0.2) !important;
+}
+
+
+.secondary-nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 14px 24px 18px !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e5e5e5 !important;
+}
+
+.secondary-nav .topbar-nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  background: #ffffff;
+  padding: 6px;
+  border: 1px solid #e1e5ea;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.secondary-nav .topbar-nav a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 9px 16px !important;
+  color: #333 !important;
+  text-decoration: none !important;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.secondary-nav .topbar-nav a:hover {
+  background: #eef5ff !important;
+  color: #0066cc !important;
+}
+
+.secondary-nav .topbar-nav a.active {
+  background: #0066cc !important;
+  color: #ffffff !important;
+}
+
+.secondary-nav .topbar-nav a svg,
+.secondary-nav .topbar-nav a i {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: currentColor;
+  color: currentColor;
+}
+
+@media (max-width: 640px) {
+  .secondary-nav {
+   padding-left: 12px !important;
+   padding-right: 12px !important;
+  }
+
+  .secondary-nav .topbar-nav {
+   width: 100%;
+   justify-content: center;
+  }
+
+  .secondary-nav .topbar-nav a {
+   flex: 1 1 120px;
+   justify-content: center;
+   min-width: 0;
+  }
+}
+
+/* ==========================================================================
+   7. PROFILE INTERFACE & DASHBOARD SYSTEM
+   ========================================================================== */
+.profile {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  cursor: pointer;
+}
+
+.profile-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0066cc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+}
+
+.profile-page {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.big-profile-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #0066cc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  font-weight: bold;
+  margin: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+.welcome-section {
+  display: block !important;
+  clear: both !important;
+  text-align: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 45px !important;
+  padding: 0 20px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+.welcome-section h1 {
+  font-size: 52px !important;
+  margin-bottom: 15px !important;
+}
+
+.welcome-section p {
+  font-size: 20px !important;
+  color: #666;
+}
+
+/* ==========================================================================
+   8. POPUPS, MODALS & FOOTER
+   ========================================================================== */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+  animation: popupShow .3s ease;
+}
+
+@keyframes popupShow {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  background: white;
+  min-width: 180px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 15px;
+  text-decoration: none;
+  color: #333;
+  transition: 0.2s;
+}
+
+.dropdown-menu a:hover {
+  background: #f5f5f5;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+footer {
+  background: #222;
+  color: #ccc;
+  text-align: center;
+  padding: 1rem;
+  font-size: .9rem;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   9. UNIVERSAL DARK SYSTEM & LIVE SPACE ENGINE
+   ========================================================================== */
+body.dark-mode,
+.dark-mode {
+  background-color: #060913 !important;
+  color: #ffffff !important;
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh !important;
+}
+
+/* Moving Floating Space Stars Overlay */
+body.dark-mode::after {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    radial-gradient(#ffffff 1px, transparent 1px),
+    radial-gradient(#ffffff 1.5px, transparent 1.5px),
+    radial-gradient(rgba(255, 255, 255, 0.4) 2px, transparent 2px),
+    radial-gradient(rgba(135, 206, 250, 0.3) 3px, transparent 3px);
+  background-size: 160px 160px, 240px 240px, 320px 320px, 400px 400px;
+  background-position: 0 0, 40px 80px, 120px 200px, 250px 110px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 0;
+  animation: spaceOrbitRotation 120s linear infinite;
+}
+
+/* Flying Comet Strike Layer */
+body.dark-mode::before {
+  content: "";
+  position: fixed;
+  top: -10%;
+  left: 110%;
+  width: 180px;
+  height: 2px;
+  background: linear-gradient(90deg, #ffffff 10%, rgba(0, 102, 204, 0.4) 50%, transparent);
+  transform: rotate(-35deg);
+  pointer-events: none;
+  z-index: 1;
+  animation: meteorShootingStrike 8s linear infinite;
+}
+
+@keyframes spaceOrbitRotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes meteorShootingStrike {
+  0% {
+    top: -10%;
+    left: 110%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  30% {
+    top: 110%;
+    left: -20%;
+    opacity: 0;
+  }
+
+  100% {
+    top: 110%;
+    left: -20%;
+    opacity: 0;
+  }
+}
+
+/* Dark mode adjustments layering */
+.dark-mode .container,
+.dark-mode .topbar,
+.dark-mode .welcome-section {
+  position: relative;
+  z-index:
+    5 !important;
+}
+
+.dark-mode .topbar {
+  background: #161b22 !important;
+  border-bottom: 1px solid #21262d !important;
+}
+
+.dark-mode .secondary-nav {
+  background: #0f172a !important;
+  border-bottom: 1px solid #21262d !important;
+}
+
+.dark-mode .topbar-theme-btn {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+  border: 1px solid #444444 !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-mode .topbar-theme-btn:hover {
+  background-color: #383838 !important;
+}
+
+.dark-mode .secondary-nav {
+  background: rgba(15, 23, 42, 0.94) !important;
+  border-bottom: 1px solid #21262d !important;
+}
+
+.dark-mode .secondary-nav .topbar-nav {
+  background: rgba(15, 23, 42, 0.82) !important;
+  border-color: rgba(148, 163, 184, 0.25) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-mode .secondary-nav .topbar-nav a {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .secondary-nav .topbar-nav a:hover {
+  background: #1f2937 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .secondary-nav .topbar-nav a.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-mode .secondary-nav .topbar-nav a svg,
+.dark-mode .secondary-nav .topbar-nav a i {
+  color: currentColor !important;
+}
+
+.dark-mode .card,
+.dark-mode .policy,
+.dark-mode .profile-card,
+.dark-mode .popup-content,
+.dark-mode .dropdown-menu {
+  background: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .dropdown-menu a {
+  color: #ffffff !important;
+}
+
+.dark-mode .dropdown-menu a:hover {
+  background: #333 !important;
+}
+
+.dark-mode .welcome-section p {
+  color: #ccc !important;
+}
+
+.dark-mode .welcome-section h1 {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  color: #fff !important;
+}
+
+.dark-mode header {
+  background: #1a73e8 !important;
+}
+
+.dark-mode footer {
+  background: #111 !important;
+}
+
+/* ==========================================================================
+   10. AUTH PAGE SWITCH LINKS (Sign In / Sign Up)
+   ========================================================================== */
+.auth-switch {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0.75rem 0 0.25rem;
+  font-weight: 400;
+}
+
+.auth-switch a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.auth-switch a:hover {
+  color: #0052a3;
+  text-decoration: underline;
+}
+
+.dark-mode .auth-switch {
+  color: #aaa;
+}
+
+.dark-mode .auth-switch a {
+  color: #3ea6ff;
+}
+
+.dark-mode .auth-switch a:hover {
+  color: #6bbcff;
+}
+
+/* ==========================================================================
+   11. MODERN THEME TOGGLE + SMOOTH TRANSITIONS
+   ========================================================================== */
+
+/* Smooth theme change on all major elements */
+body,
+header,
+footer,
+.topbar,
+.card,
+.policy,
+.profile-card,
+.popup-content,
+.dropdown-menu,
+input[type=text],
+input[type=email],
+input[type=password],
+button,
+.back-btn {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Modern circular toggle button */
+.theme-toggle {
+  width: 42px !important;
+  height: 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  transition:
+    transform 0.25s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease !important;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08) rotate(8deg) !important;
+  background: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+.theme-toggle:active {
+  transform: scale(0.95) !important;
+}
+
+.theme-icon {
+  display: block;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+  transform: rotate(20deg);
+}
+
+/* Dashboard topbar version */
+.topbar .theme-toggle {
+  background: #e9ecef !important;
+  color: #0066cc !important;
+  border: 1px solid #ced4da !important;
+}
+
+.topbar .theme-toggle:hover {
+  background: #0066cc !important;
+  color: #ffffff !important;
+  border-color: #0052a3 !important;
+}
+
+/* Dark mode toggle styling */
+.dark-mode .theme-toggle {
+  background: #2a2a2a !important;
+  color: #ffd966 !important;
+  border: 1px solid #444 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-mode .theme-toggle:hover {
+  background: #383838 !important;
+  color: #ffe066 !important;
+}
+
+.dark-mode .topbar .theme-toggle {
+  background: #2a2a2a !important;
+  color: #ffd966 !important;
+  border: 1px solid #444 !important;
+}
+
+.dark-mode .topbar .theme-toggle:hover {
+  background: #383838 !important;
+}
+
+/* Dark mode inputs smooth transition */
+.dark-mode input[type=text],
+.dark-mode input[type=email],
+.dark-mode input[type=password] {
+  background: #121212 !important;
+  border-color: #303030 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .toggle-password {
+  color: #ffffff !important;
+}
+
+.dark-mode .toggle-password svg {
+  color: #ffffff !important;
+}
+
+/* Terms text */
+.terms-text {
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+  margin: 18px 0 12px;
+}
+
+.terms-text a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.terms-text a:hover {
+  text-decoration: underline;
+}
+
+/* Dark Mode */
+.dark-mode .terms-text {
+  color: #b5b5b5;
+}
+
+.dark-mode .terms-text a {
+  color: #3ea6ff;
+}
+
+.dark-mode .terms-text a:hover {
+  color: #6bbcff;
+}
+
+.error-msg {
+  color: #ff4d4f;
+  text-align: center;
+  font-size: 14px;
+  margin: 12px 0;
+}
+
+.error-msg a {
+  color: #3399ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* .error-msg a:hover {
+} */
+ /* ============================================================
+   UNIFIX LPU LOGIN PAGE
+   Modern Split-Screen Layout
+   Light Theme Only
+   ============================================================ */
+
+
+/* ============================================================
+   1. LOGIN PAGE RESET
+   ============================================================ */
+
+.login-page {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background: #f5f7fa;
+    color: #222;
+
+    overflow: hidden;
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* ============================================================
+   2. MAIN SPLIT SCREEN
+   ============================================================ */
+
+.login-page .login-wrapper {
+    width: 100%;
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-columns: 52% 48%;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   3. LEFT VISUAL SECTION
+   ============================================================ */
+
+.login-page .login-visual {
+    position: relative;
+
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    background-image:
+        url("assets/lpu-26-years.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: stretch;
+}
+
+
+/* Dark overlay over image */
+
+.login-page .visual-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(47, 17, 8, 0.92),
+            rgba(102, 34, 12, 0.72),
+            rgba(243, 111, 33, 0.38)
+        );
+
+    z-index: 1;
+}
+
+
+/* ============================================================
+   4. LEFT CONTENT
+   ============================================================ */
+
+.login-page .visual-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 42px 55px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   5. BRAND
+   ============================================================ */
+
+.login-page .brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.login-page .brand-mark {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #f36f21;
+
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+
+.login-page .brand h1 {
+    margin: 0;
+
+    font-size: 26px;
+
+    line-height: 1.1;
+
+    font-weight: 750;
+
+    letter-spacing: -0.4px;
+}
+
+
+.login-page .brand p {
+    margin: 4px 0 0;
+
+    font-size: 13px;
+
+    color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* ============================================================
+   6. MAIN LEFT CONTENT
+   ============================================================ */
+
+.login-page .visual-main {
+    max-width: 600px;
+
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+.login-page .anniversary-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 8px 14px;
+
+    margin-bottom: 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    backdrop-filter: blur(8px);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+}
+
+
+.login-page .visual-main h2 {
+    margin: 0 0 18px;
+
+    font-size: clamp(42px, 4vw, 64px);
+
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+}
+
+
+.login-page .visual-main h2 span {
+    color: #ff8a3d;
+}
+
+
+.login-page .visual-main p {
+    max-width: 520px;
+
+    margin: 0;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, 0.82);
+}
+
+
+/* ============================================================
+   7. LEFT FOOTER
+   ============================================================ */
+
+.login-page .visual-footer {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 13px;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+
+/* ============================================================
+   8. RIGHT LOGIN SECTION
+   ============================================================ */
+
+.login-page .login-form-section {
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 55px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   9. LOGIN CARD
+   ============================================================ */
+
+.login-page .login-card {
+    width: 100%;
+
+    max-width: 470px;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   10. LOGIN HEADING
+   ============================================================ */
+
+.login-page .login-heading {
+    margin-bottom: 38px;
+}
+
+
+.login-page .login-heading h2 {
+    margin: 0 0 9px;
+
+    color: #161616;
+
+    font-size: 38px;
+
+    line-height: 1.15;
+
+    font-weight: 750;
+
+    letter-spacing: -1.2px;
+}
+
+
+.login-page .login-heading p {
+    margin: 0;
+
+    color: #727272;
+
+    font-size: 16px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   11. FORM
+   ============================================================ */
+
+.login-page #login-form {
+    width: 100%;
+}
+
+
+.login-page .form-group {
+    margin-bottom: 24px;
+}
+
+
+.login-page .form-group label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #242424;
+
+    font-size: 14px;
+
+    font-weight: 650;
+}
+
+
+/* ============================================================
+   12. PASSWORD LABEL + FORGOT PASSWORD
+   ============================================================ */
+
+.login-page .password-label-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 9px;
+}
+
+
+.login-page .password-label-row label {
+    margin-bottom: 0;
+}
+
+
+.login-page .forgot-password {
+    color: #f36f21;
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    text-decoration: none;
+}
+
+
+.login-page .forgot-password:hover {
+    color: #d9570e;
+
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   13. INPUTS
+   ============================================================ */
+
+.login-page input[type="text"],
+.login-page input[type="password"] {
+    width: 100%;
+
+    height: 52px;
+
+    box-sizing: border-box;
+
+    padding: 0 16px;
+
+    border: 1px solid #d6d9de;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #202020;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.login-page input::placeholder {
+    color: #9a9a9a;
+}
+
+
+.login-page input:hover {
+    border-color: #b8bdc5;
+}
+
+
+.login-page input:focus {
+    border-color: #f36f21;
+
+    box-shadow:
+        0 0 0 3px rgba(243, 111, 33, 0.12);
+}
+
+
+/* ============================================================
+   14. PASSWORD CONTAINER
+   ============================================================ */
+
+.login-page .password-container {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.login-page .password-container input {
+    padding-right: 52px;
+}
+
+
+/* ============================================================
+   15. PASSWORD EYE BUTTON
+   ============================================================ */
+
+.login-page .toggle-password {
+    position: absolute;
+
+    right: 10px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #737980;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.login-page .toggle-password:hover {
+    background: #f4f5f6;
+
+    color: #202020;
+
+    transform: translateY(-50%);
+}
+
+
+.login-page .toggle-password svg {
+    width: 20px;
+    height: 20px;
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   16. TERMS
+   ============================================================ */
+
+.login-page .terms-text {
+    margin: 4px 0 22px;
+
+    color: #777;
+
+    font-size: 12.5px;
+
+    line-height: 1.6;
+
+    text-align: left;
+}
+
+
+.login-page .terms-text a {
+    color: #0066cc;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+
+.login-page .terms-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   17. ERROR
+   ============================================================ */
+
+.login-page .error-msg {
+    margin: -8px 0 18px;
+
+    padding: 11px 13px;
+
+    border-radius: 7px;
+
+    background: #fff1f1;
+
+    border: 1px solid #ffd2d2;
+
+    color: #d93025;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   18. LOGIN BUTTON
+   ============================================================ */
+
+.login-page .login-submit {
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 20px;
+
+    margin: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #f36f21;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px rgba(243, 111, 33, 0.20);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.login-page .login-submit:hover {
+    background: #df5e12;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 22px rgba(243, 111, 33, 0.27);
+}
+
+
+.login-page .login-submit:active {
+    transform: translateY(0);
+}
+
+
+.login-page .login-submit svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* ============================================================
+   19. LOGIN FOOTER
+   ============================================================ */
+
+.login-page .login-footer-text {
+    margin: 24px 0 0;
+
+    text-align: center;
+
+    color: #9a9a9a;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   20. REMOVE GLOBAL HEADER/FOOTER EFFECTS ON LOGIN
+   ============================================================ */
+
+.login-page header,
+.login-page footer {
+    display: none;
+}
+
+
+/* ============================================================
+   21. MOBILE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .login-page {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+
+    .login-page .login-wrapper {
+        grid-template-columns: 1fr;
+
+        min-height: 100vh;
+    }
+
+
+    .login-page .login-visual {
+        min-height: 330px;
+
+        height: 330px;
+    }
+
+
+    .login-page .visual-content {
+        min-height: 330px;
+
+        padding: 30px;
+    }
+
+
+    .login-page .visual-main {
+        margin-top: 35px;
+        margin-bottom: 25px;
+    }
+
+
+    .login-page .visual-main h2 {
+        font-size: 38px;
+
+        letter-spacing: -1px;
+    }
+
+
+    .login-page .visual-main p {
+        font-size: 14px;
+
+        line-height: 1.5;
+    }
+
+
+    .login-page .visual-footer {
+        display: none;
+    }
+
+
+    .login-page .login-form-section {
+        min-height: auto;
+
+        padding: 45px 30px 55px;
+    }
+
+
+    .login-page .login-card {
+        max-width: 520px;
+    }
+
+}
+
+
+/* ============================================================
+   22. SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 520px) {
+
+    .login-page .login-visual {
+        min-height: 280px;
+
+        height: 280px;
+    }
+
+
+    .login-page .visual-content {
+        min-height: 280px;
+
+        padding: 25px 22px;
+    }
+
+
+    .login-page .brand h1 {
+        font-size: 22px;
+    }
+
+
+    .login-page .brand p {
+        font-size: 11px;
+    }
+
+
+    .login-page .brand-mark {
+        width: 42px;
+        height: 42px;
+
+        font-size: 19px;
+    }
+
+
+    .login-page .anniversary-badge {
+        margin-bottom: 13px;
+
+        padding: 6px 10px;
+
+        font-size: 9px;
+    }
+
+
+    .login-page .visual-main h2 {
+        font-size: 32px;
+    }
+
+
+    .login-page .visual-main p {
+        display: none;
+    }
+
+
+    .login-page .login-form-section {
+        padding: 35px 22px 45px;
+    }
+
+
+    .login-page .login-heading {
+        margin-bottom: 30px;
+    }
+
+
+    .login-page .login-heading h2 {
+        font-size: 31px;
+    }
+
+
+    .login-page .login-heading p {
+        font-size: 14px;
+    }
+
+
+    .login-page input[type="text"],
+    .login-page input[type="password"] {
+        height: 50px;
+    }
+
+
+    .login-page .login-submit {
+        height: 50px;
+    }
+
+}

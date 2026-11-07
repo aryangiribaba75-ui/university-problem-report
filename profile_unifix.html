@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | Aryan Site</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="hackathon.css">
+
+    <!-- Dark Mode -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem("theme");
+
+            if (savedTheme === "dark") {
+                document.documentElement.classList.add("dark-mode");
+            }
+        })();
+    </script>
+
+    <style>
+        /* LPU Profile Card */
+
+        .lpu-profile-card {
+            width: 420px;
+            max-width: calc(100% - 30px);
+            box-sizing: border-box;
+        }
+
+        .lpu-profile-card p {
+            margin: 0 0 18px 0;
+        }
+
+        .lpu-profile-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .lpu-profile-card strong {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 500px) {
+            .lpu-profile-card {
+                width: calc(100% - 30px);
+            }
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Aryan’s Profile</h1>
+
+        <button id="darkModeBtn" class="theme-toggle" type="button" aria-label="Switch to dark mode"
+            title="Switch to dark mode">
+        </button>
+    </header>
+
+
+    <!-- Main Profile Area -->
+    <main class="container">
+
+        <div class="profile-page">
+
+            <!-- Profile Avatar -->
+            <div class="big-profile-circle">
+                A
+            </div>
+
+
+            <!-- LPU Student Information -->
+            <div class="profile-card lpu-profile-card">
+
+                <p>
+                    <strong>Name:</strong>
+                    Aryan
+                </p>
+
+                <p>
+                    <strong>Student ID:</strong>
+                    LPU Student ID
+                </p>
+
+                <p>
+                    <strong>Hostel:</strong>
+                    Hostel Name
+                </p>
+
+                <p>
+                    <strong>Course:</strong>
+                    B.Tech
+                </p>
+
+                <p>
+                    <strong>School:</strong>
+                    School of Computer Science
+                </p>
+
+                <p>
+                    <strong>Programme:</strong>
+                    Computer Science & Engineering
+                </p>
+
+                <p>
+                    <strong>Semester:</strong>
+                    1st Semester
+                </p>
+
+                <p>
+                    <strong>Section:</strong>
+                    Section A
+                </p>
+
+                <p>
+                    <strong>Academic Session:</strong>
+                    2026–27
+                </p>
+
+            </div>
+
+
+            <!-- Back Button -->
+            <a href="dashboard.html" class="back-btn">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- Theme Controller -->
+    <script src="theme.js"></script>
+
+    <!-- Profile JS -->
+    <script src="profile.js"></script>
+
+</body>
+
+</html>

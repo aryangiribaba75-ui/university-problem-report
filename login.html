@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>UniFix LPU | Login</title>
+
+    <link rel="stylesheet" href="hackathon.css" />
+    <script src="themeunifix.js" defer></script>
+</head>
+
+<body class="login-page">
+
+    <main class="login-wrapper">
+
+        <!-- =========================
+             LEFT SIDE
+        ========================== -->
+        <section class="login-visual">
+
+            <div class="visual-overlay"></div>
+
+            <div class="visual-content">
+
+                <div class="brand">
+                    <div class="brand-mark">
+                        U
+                    </div>
+
+                    <div>
+                        <h1>UniFix LPU</h1>
+                        <p>Smart Campus • Better Experience</p>
+                    </div>
+                </div>
+
+
+                <div class="visual-main">
+
+                    <span class="anniversary-badge">
+                        CELEBRATING 26 YEARS
+                    </span>
+
+                    <h2>
+                        Building a<br>
+                        <span>Better Campus</span>
+                    </h2>
+
+                    <p>
+                        Report campus issues, track their resolution
+                        and help make LPU a better place for everyone.
+                    </p>
+
+                </div>
+
+
+                <div class="visual-footer">
+                    <span>Lovely Professional University</span>
+                    <span>•</span>
+                    <span>26 Years of Excellence</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RIGHT SIDE
+        ========================== -->
+        <section class="login-form-section">
+
+            <div class="login-card">
+
+                <div class="login-heading">
+
+                    <h2>Welcome back</h2>
+
+                    <p>
+                        Sign in to your account to continue
+                    </p>
+
+                </div>
+
+
+                <!-- LOGIN FORM -->
+                <form id="login-form">
+
+                    <!-- UNIVERSITY ID -->
+                    <div class="form-group">
+
+                        <label for="uid">
+                            University ID
+                        </label>
+
+                        <input type="text" id="uid" name="uid" placeholder="Enter your University ID"
+                            inputmode="numeric" pattern="[0-9]+" autocomplete="username" required
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <div class="password-label-row">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <a href="#" class="forgot-password">
+                                Forgot password?
+                            </a>
+
+                        </div>
+
+
+                        <div class="password-container">
+
+                            <input type="password" id="password" name="password" placeholder="Enter your password"
+                                minlength="6" autocomplete="current-password" required />
+
+
+                            <button type="button" id="togglePassword" class="toggle-password"
+                                aria-label="Show password">
+
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="21" height="21"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+
+                                    <circle cx="12" cy="12" r="3" />
+
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ERROR MESSAGE -->
+                    <p id="login-error" class="error-msg" hidden></p>
+
+
+                    <!-- TERMS -->
+                    <p class="terms-text">
+
+                        By continuing, you agree to
+
+                        <a href="terms.html" target="_blank">
+                            UniFix LPU Terms of Use
+                        </a>
+
+                        and
+
+                        <a href="policy.html" target="_blank">
+                            Privacy Policy
+                        </a>.
+
+                    </p>
+
+
+                    <!-- LOGIN BUTTON -->
+                    <button type="submit" class="login-submit">
+                        <span>Sign In</span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </button>
+
+                    <!-- <p class="signup-link">
+                        Don't have an account?
+                        <a href="index.html">Create Account</a>
+                    </p> -->
+
+
+                    <!-- SMALL FOOTER -->
+                    <p class="login-footer-text">
+                        Secure student access • UniFix LPU
+                    </p>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         LOGIN JAVASCRIPT
+    ========================== -->
+    <script>
+    const loginForm = document.getElementById("login-form");
+    const loginError = document.getElementById("login-error");
+
+    const password = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    const uidInput = document.getElementById("uid");
+
+    // PASSWORD EYE
+    if (togglePassword && password) {
+        togglePassword.addEventListener("click", () => {
+            if (password.type === "password") {
+                password.type = "text";
+                togglePassword.setAttribute("aria-label", "Hide password");
+            } else {
+                password.type = "password";
+                togglePassword.setAttribute("aria-label", "Show password");
+            }
+        });
+    }
+
+    // UNIVERSITY ID — NUMBERS ONLY
+    if (uidInput) {
+        uidInput.addEventListener("input", () => {
+            uidInput.value = uidInput.value.replace(/[^0-9]/g, "");
+        });
+    }
+
+    // DEMO LOGIN
+    // Any ID + any password will open dashboard
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const uid = uidInput.value.trim() || "Demo User";
+
+            localStorage.setItem("unifixUID", uid);
+            localStorage.setItem("unifixName", "Demo Student");
+
+            window.location.href = "dashboard_UniFix.html";
+        });
+    }
+
+    </script>
+
+</body>
+
+</html>

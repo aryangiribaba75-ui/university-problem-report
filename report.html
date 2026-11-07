@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report an Issue | UniFix LPU</title>
+
+    <!-- Your existing CSS -->
+    <link rel="stylesheet" href="hackathon.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* =====================================================
+           UNIFIX LPU — REPORT AN ISSUE PAGE
+           Reuses the same tokens as dashboard.html / track.html:
+           orange accent (#ff6b00), muted grey text (#667085),
+           card border (#e5e7eb), 18px card radius, .panel,
+           .btn-primary, .status / .priority pill patterns.
+           ===================================================== */
+
+        .unifix-dashboard {
+            min-height: calc(100vh - 72px);
+            padding: 35px 7%;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0 0 8px;
+            font-size: clamp(28px, 3.6vw, 40px);
+            line-height: 1.1;
+        }
+
+        .dashboard-header p {
+            margin: 0;
+            color: #667085;
+            font-size: 16px;
+        }
+
+        .student-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            border: 1px solid #e3e7ec;
+            border-radius: 14px;
+            background: #ffffff;
+            color: #475467;
+            white-space: nowrap;
+        }
+
+        .student-badge i {
+            width: 18px;
+            color: #ff6b00;
+        }
+
+        /* ---------- Form layout: sections stacked as panels ---------- */
+
+        .report-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 860px;
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(16, 24, 40, 0.05);
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .panel-heading .step-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #fff1e7;
+            color: #ff6b00;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .panel-heading .step-icon i {
+            width: 17px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .panel-subtext {
+            margin: 0 0 20px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        /* ---------- Fields ---------- */
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1d2939;
+            margin-bottom: 7px;
+        }
+
+        .field label .optional-tag {
+            font-weight: 500;
+            color: #98a2b3;
+            font-size: 11px;
+        }
+
+        .field input[type="text"],
+        .field textarea,
+        .field select {
+            width: 100%;
+            border: 1px solid #e3e7ec;
+            border-radius: 12px;
+            padding: 11px 13px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #1d2939;
+            background: #f9fafb;
+            box-sizing: border-box;
+        }
+
+        .field input[type="text"]:focus,
+        .field textarea:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #ff9d52;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px #ffe8d5;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 110px;
+            line-height: 1.5;
+        }
+
+        .field.has-error input,
+        .field.has-error textarea,
+        .field.has-error select {
+            border-color: #f04438;
+            background: #fef4f3;
+        }
+
+        .field-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #98a2b3;
+        }
+
+        .field-error {
+            display: none;
+            color: #b42318;
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .field.has-error .field-error {
+            display: block;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ---------- AI suggested badge on category ---------- */
+
+        .category-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-row select {
+            flex: 1;
+        }
+
+        .ai-tag {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            background: #f4ecff;
+            color: #7c3aed;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .ai-tag.show {
+            display: inline-flex;
+        }
+
+        .ai-tag i {
+            width: 12px;
+        }
+
+        /* ---------- Upload area ---------- */
+
+        .upload-area {
+            border: 2px dashed #d9dee5;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .upload-area:hover,
+        .upload-area.drag-over {
+            border-color: #ff9d52;
+            background: #fff7f0;
+        }
+
+        .upload-area i.upload-icon {
+            width: 30px;
+            height: 30px;
+            color: #ff6b00;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            margin: 0 0 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d2939;
+        }
+
+        .upload-area span {
+            font-size: 12px;
+            color: #98a2b3;
+        }
+
+        .upload-area .browse-link {
+            color: #ff6b00;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .upload-preview {
+            display: none;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .upload-preview.show {
+            display: flex;
+        }
+
+        .upload-preview img {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #eef0f3;
+        }
+
+        .upload-preview .file-icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            background: #f4f6f8;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .upload-preview .file-icon-box i {
+            width: 26px;
+            color: #667085;
+        }
+
+        .upload-preview-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .upload-preview-info strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .upload-preview-info span {
+            font-size: 12px;
+            color: #98a2b3;
+        }
+
+        .remove-file-btn {
+            border: none;
+            background: #fef4f3;
+            color: #b42318;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .remove-file-btn i {
+            width: 15px;
+        }
+
+        .upload-error {
+            display: none;
+            color: #b42318;
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .upload-error.show {
+            display: block;
+        }
+
+        /* ---------- AI Analyze button + result card ---------- */
+
+        .analyze-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1d2939;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .analyze-btn:disabled {
+            background: #d0d5dd;
+            cursor: not-allowed;
+        }
+
+        .analyze-btn i {
+            width: 16px;
+        }
+
+        .analyze-hint {
+            margin: 10px 0 0;
+            font-size: 12px;
+            color: #98a2b3;
+        }
+
+        .ai-result-card {
+            display: none;
+            margin-top: 18px;
+            border: 1px solid #ece4ff;
+            background: #faf8ff;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .ai-result-card.show {
+            display: block;
+        }
+
+        .ai-result-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .ai-result-title .left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #1d2939;
+        }
+
+        .ai-result-title i {
+            width: 16px;
+            color: #7c3aed;
+        }
+
+        .edit-ai-btn {
+            border: 1px solid #e3e7ec;
+            background: #ffffff;
+            color: #475467;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+        }
+
+        .ai-result-rows {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 18px;
+            font-size: 13px;
+        }
+
+        .ai-result-rows .row span.label {
+            display: block;
+            color: #98a2b3;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .ai-result-rows .row strong {
+            font-size: 13px;
+            color: #1d2939;
+        }
+
+        .ai-result-rows select {
+            width: 100%;
+            border: 1px solid #e3e7ec;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: inherit;
+            background: #ffffff;
+        }
+
+        .confidence-bar {
+            margin-top: 14px;
+        }
+
+        .confidence-bar-track {
+            height: 6px;
+            border-radius: 999px;
+            background: #ece4ff;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .confidence-bar-fill {
+            height: 100%;
+            background: #7c3aed;
+            border-radius: 999px;
+        }
+
+        .save-ai-edit-btn {
+            margin-top: 14px;
+            display: none;
+            background: #ff6b00;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-ai-edit-btn.show {
+            display: inline-block;
+        }
+
+        /* ---------- Severity legend ---------- */
+
+        .severity-legend {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .severity-chip {
+            border: 1px solid #eef0f3;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .severity-chip .status {
+            margin-bottom: 6px;
+            display: inline-block;
+        }
+
+        .severity-chip p {
+            margin: 0;
+            font-size: 12px;
+            color: #667085;
+            line-height: 1.4;
+        }
+
+        /* ---------- Status + priority pills (shared with track.html) ---------- */
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-low {
+            background: #e8f7ee;
+            color: #18794e;
+        }
+
+        .status-medium {
+            background: #fff3d6;
+            color: #9a6700;
+        }
+
+        .status-high {
+            background: #ffe8d5;
+            color: #c2410c;
+        }
+
+        .status-critical {
+            background: #fde8e8;
+            color: #b42318;
+        }
+
+        .status-reported {
+            background: #e9f2ff;
+            color: #1769aa;
+        }
+
+        /* ---------- Location helper text ---------- */
+
+        .location-preview {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #667085;
+            background: #f8fafc;
+            border: 1px solid #edf0f3;
+            border-radius: 10px;
+            padding: 9px 12px;
+        }
+
+        .location-preview strong {
+            color: #1d2939;
+        }
+
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px dashed #d9dee5;
+            background: #f9fafb;
+            color: #98a2b3;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: not-allowed;
+            margin-top: 14px;
+        }
+
+        .map-btn i {
+            width: 15px;
+        }
+
+        /* ---------- Review section ---------- */
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px 18px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .review-grid .row span.label {
+            display: block;
+            color: #98a2b3;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .review-grid .row strong {
+            color: #1d2939;
+            font-size: 13px;
+        }
+
+        .review-photo {
+            width: 100%;
+            max-width: 220px;
+            border-radius: 12px;
+            border: 1px solid #eef0f3;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ---------- Form-level error banner ---------- */
+
+        .form-error-banner {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: #fef4f3;
+            border: 1px solid #fbd5d5;
+            color: #b42318;
+            border-radius: 14px;
+            padding: 13px 16px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-error-banner.show {
+            display: flex;
+        }
+
+        .form-error-banner i {
+            width: 17px;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Submit row ---------- */
+
+        .submit-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ff6b00;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #e65f00;
+        }
+
+        .btn-primary:disabled {
+            background: #ffb27a;
+            cursor: not-allowed;
+        }
+
+        .btn-primary i {
+            width: 16px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            color: #475467;
+            border: 1px solid #e3e7ec;
+            border-radius: 12px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            border-color: #d0d5dd;
+        }
+
+        .btn-secondary i {
+            width: 16px;
+        }
+
+        .spinner {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-top-color: #ffffff;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ---------- Success screen ---------- */
+
+        .success-screen {
+            display: none;
+            max-width: 620px;
+            text-align: center;
+            margin: 30px auto 0;
+        }
+
+        .success-screen.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: #e8f7ee;
+            color: #18794e;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 18px;
+        }
+
+        .success-icon i {
+            width: 32px;
+        }
+
+        .success-screen h2 {
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+
+        .success-screen>p.sub {
+            margin: 0 0 24px;
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .success-details {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(16, 24, 40, 0.05);
+            text-align: left;
+        }
+
+        .success-details .review-grid {
+            margin-bottom: 0;
+        }
+
+        .success-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ---------- Responsive ---------- */
+
+        @media (max-width: 850px) {
+            .dashboard-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .field-row,
+            .ai-result-rows,
+            .review-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .severity-legend {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .unifix-dashboard {
+                padding: 25px 18px;
+            }
+
+            .student-badge {
+                width: 100%;
+            }
+
+            .severity-legend {
+                grid-template-columns: 1fr;
+            }
+
+            .submit-row {
+                flex-direction: column-reverse;
+            }
+
+            .submit-row .btn-primary,
+            .submit-row .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         TOP NAVIGATION BAR (same markup as dashboard.html)
+         ===================================================== -->
+
+    <div class="topbar">
+
+        <div class="topbar-left">
+
+            <a href="dashboard.html" style="
+               text-decoration:none;
+               color:inherit;
+               font-weight:800;
+               font-size:20px;
+               ">
+
+                <span style="color:#ff6b00;">
+                    Uni
+                </span>Fix LPU
+
+            </a>
+
+        </div>
+
+
+        <div class="profile" id="profileBtn">
+
+            <div class="profile-circle">
+                A
+            </div>
+
+            <span>
+                User
+            </span>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+
+                <a href="profile_unifix.html">
+                    👤 Profile
+                </a>
+
+                <a href="login.html">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         REPORT AN ISSUE PAGE
+         ===================================================== -->
+
+    <main class="unifix-dashboard">
+
+
+        <!-- Page header -->
+
+        <section class="dashboard-header">
+
+            <div>
+                <h1>Report an Issue</h1>
+                <p>Help us improve the LPU campus by reporting problems you encounter.</p>
+            </div>
+
+            <div class="student-badge">
+                <i data-lucide="camera"></i>
+                <span>Student Portal • UniFix LPU</span>
+            </div>
+
+        </section>
+
+
+        <!-- Form-level error banner (shown on validation / submit failure) -->
+
+        <div class="form-error-banner" id="formErrorBanner" role="alert" style="max-width:860px; margin-bottom:18px;">
+            <i data-lucide="alert-circle"></i>
+            <span id="formErrorText">Something went wrong.</span>
+        </div>
+
+
+        <!-- =================================================
+             THE REPORT FORM
+             ================================================= -->
+
+        <form class="report-form" id="reportForm" novalidate>
+
+
+            <!-- ---------- 1. ISSUE DETAILS ---------- -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div class="step-icon"><i data-lucide="file-text"></i></div>
+                    <h2>Issue Details</h2>
+                </div>
+                <p class="panel-subtext">Tell us what's wrong, in your own words.</p>
+
+                <div class="field" id="titleField">
+                    <label for="issueTitle">What's the problem?</label>
+                    <input type="text" id="issueTitle" name="issueTitle"
+                        placeholder="e.g. Street light not working near Block 34" maxlength="120">
+                    <div class="field-meta">
+                        <span id="titleCounter">0 / 120</span>
+                    </div>
+                    <div class="field-error" id="titleError">Please enter a clear title (8–120 characters).</div>
+                </div>
+
+                <div class="field" id="descriptionField">
+                    <label for="issueDescription">Describe the problem</label>
+                    <textarea id="issueDescription" name="issueDescription" maxlength="800"
+                        placeholder="Describe what happened, where you noticed it, and any other useful information."></textarea>
+                    <div class="field-meta">
+                        <span id="descCounter">0 / 800</span>
+                    </div>
+                    <div class="field-error" id="descriptionError">Please add at least 20 characters describing the
+                        issue.</div>
+                </div>
+
+                <div class="field" id="categoryField">
+                    <label for="issueCategory">Category</label>
+                    <div class="category-row">
+                        <select id="issueCategory" name="issueCategory">
+                            <option value="">Select a category</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Cleanliness">Cleanliness</option>
+                            <option value="Roads & Infrastructure">Roads & Infrastructure</option>
+                            <option value="Classroom">Classroom</option>
+                            <option value="Hostel">Hostel</option>
+                            <option value="Washroom">Washroom</option>
+                            <option value="Internet / Wi-Fi">Internet / Wi-Fi</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Security">Security</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="ai-tag" id="categoryAiTag"><i data-lucide="sparkles"></i>AI Suggested</span>
+                    </div>
+                    <div class="field-meta">
+                        <span>You can change this any time — it's a recommendation, not a final classification.</span>
+                    </div>
+                    <div class="field-error" id="categoryError">Please choose a category.</div>
+                </div>
+
+            </div>
+
+
+            <!-- ---------- 2. PHOTO / VIDEO UPLOAD ---------- -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div class="step-icon"><i data-lucide="camera"></i></div>
+                    <h2>Upload a photo</h2>
+                </div>
+                <!-- Camera Section -->
+                <div class="camera-section">
+
+                    <button type="button" id="cameraBtn">
+                        📷 Take Photo
+                    </button>
+
+                    <div id="cameraError" class="upload-error"></div>
+
+                    <div id="cameraContainer" hidden>
+
+                        <video id="cameraPreview" autoplay playsinline></video>
+
+                        <div class="camera-controls">
+                            <button type="button" id="captureBtn">
+                                📸 Capture Photo
+                            </button>
+
+                            <button type="button" id="closeCameraBtn">
+                                ✕ Close Camera
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div id="photoContainer" hidden>
+
+                        <img id="capturedPhoto" alt="Captured issue photo">
+
+                        <button type="button" id="retakeBtn">
+                            🔄 Retake
+                        </button>
+
+                    </div>
+
+                    <canvas id="photoCanvas" hidden></canvas>
+
+                </div>
+                <p class="panel-subtext">A clear photo helps us understand the issue faster. (Recommended)</p>
+
+                <div class="field" id="imageField">
+                    <div class="upload-area" id="imageUploadArea" tabindex="0" role="button"
+                        aria-label="Upload a photo of the issue">
+                        <i class="upload-icon" data-lucide="image-plus"></i>
+                        <p>Drag & drop an image here</p>
+                        <span>or <span class="browse-link">Browse files</span> — JPG, PNG or WEBP, up to 5MB</span>
+                        <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp" class="hidden">
+                    </div>
+
+                    <div class="upload-preview" id="imagePreview">
+                        <img id="imagePreviewThumb" alt="Preview of the uploaded issue photo">
+                        <div class="upload-preview-info">
+                            <strong id="imageFileName">photo.jpg</strong>
+                            <span id="imageFileSize">0 KB</span>
+                        </div>
+                        <button type="button" class="remove-file-btn" id="removeImageBtn" aria-label="Remove photo">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+
+                    <div class="upload-error" id="imageError"></div>
+                </div>
+
+                <div class="field" id="videoField" style="margin-top: 22px;">
+                    <label for="videoInput">Add a short video <span class="optional-tag">(optional)</span></label>
+                    <div class="upload-area" id="videoUploadArea" tabindex="0" role="button"
+                        aria-label="Upload an optional video of the issue">
+                        <i class="upload-icon" data-lucide="video"></i>
+                        <p>Drag & drop a video here</p>
+                        <span>or <span class="browse-link">Browse files</span> — MP4 or WEBM, up to 25MB</span>
+                        <input type="file" id="videoInput" accept="video/mp4, video/webm" class="hidden">
+                    </div>
+
+                    <div class="upload-preview" id="videoPreview">
+                        <div class="file-icon-box"><i data-lucide="video"></i></div>
+                        <div class="upload-preview-info">
+                            <strong id="videoFileName">clip.mp4</strong>
+                            <span id="videoFileSize">0 KB</span>
+                        </div>
+                        <button type="button" class="remove-file-btn" id="removeVideoBtn" aria-label="Remove video">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+
+                    <div class="upload-error" id="videoError"></div>
+                </div>
+
+            </div>
+
+
+            <!-- ---------- 3. LOCATION ---------- -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div class="step-icon"><i data-lucide="map-pin"></i></div>
+                    <h2>Where did you find this issue?</h2>
+                </div>
+                <p class="panel-subtext">Give us enough detail so the right team can find it quickly.</p>
+
+                <div class="field-row">
+                    <div class="field" id="buildingField">
+                        <label for="locBuilding">Building / Block / Hostel</label>
+                        <input type="text" id="locBuilding" placeholder="e.g. Block 34, Hostel Block C">
+                        <div class="field-error" id="buildingError">Please tell us the building, block or hostel.</div>
+                    </div>
+                    <div class="field">
+                        <label for="locFloor">Floor <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="locFloor" placeholder="e.g. 2nd Floor">
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="locArea">Room / Area <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="locArea" placeholder="e.g. Room 204, near Main Gate">
+                    </div>
+                    <div class="field">
+                        <label for="locLandmark">Landmark <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="locLandmark" placeholder="e.g. Near the cafeteria">
+                    </div>
+                </div>
+
+                <div class="location-preview hidden" id="locationPreview">
+                    <strong>Location: </strong><span id="locationPreviewText"></span>
+                </div>
+
+                <button type="button" class="map-btn" disabled title="Map integration coming soon">
+                    <i data-lucide="map"></i>
+                    Select location on map (coming soon)
+                </button>
+
+            </div>
+
+
+            <!-- ---------- 4. AI ANALYSIS ---------- -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div class="step-icon"><i data-lucide="sparkles"></i></div>
+                    <h2>AI Analysis</h2>
+                </div>
+                <p class="panel-subtext">
+                    Let UniFix suggest a category, severity and department based on your title and description.
+                    This is a demo AI layer — no real AI model is connected yet.
+                </p>
+
+                <button type="button" class="analyze-btn" id="analyzeBtn" disabled>
+                    <i data-lucide="sparkles"></i>
+                    <span id="analyzeBtnText">Analyze with AI</span>
+                </button>
+                <p class="analyze-hint">Add a title and description above to enable this.</p>
+
+                <div class="ai-result-card" id="aiResultCard">
+
+                    <div class="ai-result-title">
+                        <div class="left"><i data-lucide="sparkles"></i>AI Analysis Result</div>
+                        <button type="button" class="edit-ai-btn" id="editAiBtn">Edit</button>
+                    </div>
+
+                    <div class="ai-result-rows" id="aiResultRows">
+                        <div class="row">
+                            <span class="label">Detected Issue</span>
+                            <strong id="aiDetectedIssue">—</strong>
+                        </div>
+                        <div class="row">
+                            <span class="label">Category</span>
+                            <strong id="aiCategoryText">—</strong>
+                            <select class="hidden" id="aiCategorySelect"></select>
+                        </div>
+                        <div class="row">
+                            <span class="label">Severity</span>
+                            <strong id="aiSeverityText">—</strong>
+                            <select class="hidden" id="aiSeveritySelect">
+                                <option>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                                <option>Critical</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span class="label">Suggested Priority</span>
+                            <strong id="aiPriorityText">—</strong>
+                            <select class="hidden" id="aiPrioritySelect">
+                                <option>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                                <option>Critical</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span class="label">Suggested Department</span>
+                            <strong id="aiDepartmentText">—</strong>
+                            <select class="hidden" id="aiDepartmentSelect">
+                                <option>Electrical Maintenance</option>
+                                <option>Plumbing & Water</option>
+                                <option>Housekeeping</option>
+                                <option>IT Support</option>
+                                <option>Civil Maintenance</option>
+                                <option>Hostel Administration</option>
+                                <option>Security</option>
+                                <option>Academic Facilities</option>
+                                <option>Campus Administration</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <span class="label">Confidence</span>
+                            <strong id="aiConfidenceText">—</strong>
+                        </div>
+                    </div>
+
+                    <div class="confidence-bar">
+                        <div class="confidence-bar-track">
+                            <div class="confidence-bar-fill" id="confidenceBarFill" style="width:0%;"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="save-ai-edit-btn" id="saveAiEditBtn">Save changes</button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ---------- 5. SEVERITY LEGEND ---------- -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div class="step-icon"><i data-lucide="gauge"></i></div>
+                    <h2>What do the severity levels mean?</h2>
+                </div>
+
+                <div class="severity-legend">
+                    <div class="severity-chip">
+                        <span class="status status-low">Low</span>
+                        <p>Minor issue, no urgency. Can be scheduled normally.</p>
+                    </div>
+                    <div class="severity-chip">
+                        <span class="status status-medium">Medium</span>
+                        <p>Noticeable problem that should be addressed soon.</p>
+                    </div>
+                    <div class="severity-chip">
+                        <span class="status status-high">High</span>
+                        <p>Significant issue affecting daily use of a space.</p>
+                    </div>
+                    <div class="severity-chip">
+                        <span class="status status-critical">Critical</span>
+                        <p>Immediate attention may be required for safety.</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ---------- 6. REVIEW BEFORE SUBMISSION ---------- -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div class="step-icon"><i data-lucide="list-checks"></i></div>
+                    <h2>Review before you submit</h2>
+                </div>
+                <p class="panel-subtext" id="reviewEmptyHint">Fill in the details above and your report summary will
+                    appear here.</p>
+
+                <div class="review-grid hidden" id="reviewGrid">
+                    <div class="row">
+                        <span class="label">Issue Title</span>
+                        <strong id="reviewTitle">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Category</span>
+                        <strong id="reviewCategory">—</strong>
+                    </div>
+                    <div class="row" style="grid-column: 1 / -1;">
+                        <span class="label">Description</span>
+                        <strong id="reviewDescription">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Location</span>
+                        <strong id="reviewLocation">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Severity / Priority</span>
+                        <strong id="reviewSeverityPriority">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Suggested Department</span>
+                        <strong id="reviewDepartment">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Photo</span>
+                        <img class="review-photo hidden" id="reviewPhoto" alt="Uploaded issue photo">
+                        <strong id="reviewPhotoNone">Not attached</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ---------- SUBMIT ROW ---------- -->
+
+            <div class="submit-row">
+                <button type="button" class="btn-secondary" id="resetFormBtn">
+                    <i data-lucide="rotate-ccw"></i>
+                    Reset Form
+                </button>
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i data-lucide="send"></i>
+                    <span id="submitBtnText">Submit Report</span>
+                </button>
+            </div>
+
+        </form>
+
+
+        <!-- =================================================
+             SUCCESS SCREEN (shown after a report is submitted)
+             ================================================= -->
+
+        <div class="success-screen" id="successScreen">
+
+            <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
+            <h2>Report Submitted Successfully</h2>
+            <p class="sub">Your report has been logged and sent to the campus team.</p>
+
+            <div class="success-details">
+                <div class="review-grid">
+                    <div class="row">
+                        <span class="label">Issue ID</span>
+                        <strong id="successIssueId">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Status</span>
+                        <strong><span class="status status-reported">Reported</span></strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Category</span>
+                        <strong id="successCategory">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Priority</span>
+                        <strong id="successPriority">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Department</span>
+                        <strong id="successDepartment">—</strong>
+                    </div>
+                    <div class="row">
+                        <span class="label">Date</span>
+                        <strong id="successDate">—</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-actions">
+                <a class="btn-primary" href="track.html">
+                    <i data-lucide="map-pin"></i>
+                    Track Resolution
+                </a>
+                <a class="btn-secondary" href="my-reports.html">
+                    <i data-lucide="clipboard-list"></i>
+                    My Reports
+                </a>
+                <a class="btn-secondary" href="dashboard.html">
+                    <i data-lucide="layout-dashboard"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         EXISTING THEME CONTROLLER
+         ===================================================== -->
+
+    <script src="themeunifix.js"></script>
+
+
+
+    <!-- =====================================================
+         REPORT AN ISSUE — DATA LAYER + LOGIC
+         ===================================================== -->
+
+    <script>
+
+        /* ==========================================================
+           1. MOCK AI SERVICE
+           ----------------------------------------------------------
+           This stands in for a real AI backend. It looks at the
+           title + description text and guesses a category, severity,
+           priority and department using simple keyword matching.
+
+           When a real AI service exists, replace the body of
+           analyzeIssue() with a call like:
+
+             const res = await fetch('/api/ai/analyze-issue', {
+                 method: 'POST',
+                 body: formData // title, description, image
+             });
+             return res.json();
+
+           Nothing else in this file needs to change, because the
+           rest of the page only ever calls AIService.analyzeIssue().
+           ========================================================== */
+
+        const AIService = (function () {
+
+            const KEYWORD_MAP = [
+                {category: "Electrical", department: "Electrical Maintenance", words: ["light", "electric", "wire", "wiring", "socket", "switch", "power", "bulb", "shock"]},
+                {category: "Plumbing", department: "Plumbing & Water", words: ["water", "leak", "pipe", "tap", "drain", "flood", "plumbing"]},
+                {category: "Cleanliness", department: "Housekeeping", words: ["garbage", "dustbin", "trash", "dirty", "clean", "waste", "litter"]},
+                {category: "Roads & Infrastructure", department: "Civil Maintenance", words: ["road", "pothole", "tile", "pavement", "crack", "footpath", "gate", "wall"]},
+                {category: "Washroom", department: "Housekeeping", words: ["washroom", "toilet", "bathroom", "restroom"]},
+                {category: "Hostel", department: "Hostel Administration", words: ["hostel", "room", "warden", "mess"]},
+                {category: "Classroom", department: "Academic Facilities", words: ["classroom", "projector", "class", "lecture hall", "board"]},
+                {category: "Internet / Wi-Fi", department: "IT Support", words: ["wifi", "wi-fi", "internet", "network", "connectivity"]},
+                {category: "Furniture", department: "Academic Facilities", words: ["chair", "desk", "table", "furniture", "bench"]},
+                {category: "Security", department: "Security", words: ["security", "cctv", "guard", "unsafe", "theft", "lock"]}
+            ];
+
+            const CRITICAL_WORDS = ["fire", "shock", "danger", "collapse", "gas leak", "exposed wire", "emergency"];
+            const HIGH_WORDS = ["broken", "not working", "leak", "unsafe", "damaged", "overflowing"];
+
+            function detectCategory(text) {
+                const lower = text.toLowerCase();
+                for (const entry of KEYWORD_MAP) {
+                    if (entry.words.some(w => lower.includes(w))) {
+                        return entry;
+                    }
+                }
+                return {category: "Other", department: "Campus Administration"};
+            }
+
+            function detectSeverity(text) {
+                const lower = text.toLowerCase();
+                if (CRITICAL_WORDS.some(w => lower.includes(w))) return "Critical";
+                if (HIGH_WORDS.some(w => lower.includes(w))) return "High";
+                if (lower.length > 0) return "Medium";
+                return "Low";
+            }
+
+            function severityToPriority(severity) {
+                // In this demo, priority mirrors severity. A real backend
+                // may weigh other factors (location, repeat reports, etc.)
+                return severity;
+            }
+
+            async function analyzeIssue({title, description}) {
+                const text = `${title} ${description}`;
+                const match = detectCategory(text);
+                const severity = detectSeverity(text);
+                const priority = severityToPriority(severity);
+                const confidence = Math.floor(82 + Math.random() * 15); // 82–97%
+
+                // Simulate network / model latency for a realistic demo feel.
+                await new Promise(resolve => setTimeout(resolve, 1200));
+
+                return {
+                    detectedIssue: title || "Reported campus issue",
+                    category: match.category,
+                    severity,
+                    priority,
+                    department: match.department,
+                    confidence
+                };
+            }
+
+            return {analyzeIssue};
+        })();
+
+
+        /* ==========================================================
+           2. MOCK REPORT SUBMISSION SERVICE
+           ----------------------------------------------------------
+           This project's uploaded files do not include a server.js,
+           so there is no real /api/reports endpoint to call yet.
+           This function tries the real endpoint first (so it starts
+           working automatically the moment a backend exists), and
+           falls back to a clearly-labelled local demo response.
+
+           Real backend integration point:
+             POST /api/reports  (multipart/form-data)
+             body: title, description, category, location, severity,
+                   priority, department, image, video, userId
+           ========================================================== */
+
+        const ReportService = (function () {
+
+            function generateDemoIssueId() {
+                // DEMO ONLY — a real backend must generate the real Issue ID.
+                const year = new Date().getFullYear();
+                const random = Math.floor(100000 + Math.random() * 900000);
+                return `UF-${year}-${random}`;
+            }
+
+            async function submitReport(formData) {
+                try {
+                    const res = await fetch("/api/reports", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    if (!res.ok) throw new Error("Backend responded with an error");
+                    return await res.json();
+
+                } catch (err) {
+                    // No backend available yet in this project — fall back to
+                    // a local demo response so the hackathon demo still works.
+                    await new Promise(resolve => setTimeout(resolve, 900));
+                    return {
+                        id: generateDemoIssueId(),
+                        status: "Reported",
+                        createdAt: new Date().toISOString(),
+                        demoMode: true
+                    };
+                }
+            }
+
+            return {submitReport};
+        })();
+
+
+        /* ==========================================================
+           3. CONSTANTS + STATE
+           ========================================================== */
+
+        const TITLE_MIN = 8, TITLE_MAX = 120;
+        const DESC_MIN = 20, DESC_MAX = 800;
+        const MAX_IMAGE_MB = 5, MAX_VIDEO_MB = 25;
+
+        const state = {
+            imageFile: null,
+            videoFile: null,
+            aiResult: null,       // { detectedIssue, category, severity, priority, department, confidence }
+            aiEditing: false,
+            categorySetByAI: false,
+            submitting: false
+        };
+
+
+        /* ==========================================================
+           4. ELEMENT REFERENCES
+           ========================================================== */
+
+        const els = {
+            title: document.getElementById("issueTitle"),
+            titleField: document.getElementById("titleField"),
+            titleCounter: document.getElementById("titleCounter"),
+
+            description: document.getElementById("issueDescription"),
+            descField: document.getElementById("descriptionField"),
+            descCounter: document.getElementById("descCounter"),
+
+            category: document.getElementById("issueCategory"),
+            categoryField: document.getElementById("categoryField"),
+            categoryAiTag: document.getElementById("categoryAiTag"),
+
+            imageArea: document.getElementById("imageUploadArea"),
+            imageInput: document.getElementById("imageInput"),
+            imagePreview: document.getElementById("imagePreview"),
+            imagePreviewThumb: document.getElementById("imagePreviewThumb"),
+            imageFileName: document.getElementById("imageFileName"),
+            imageFileSize: document.getElementById("imageFileSize"),
+            removeImageBtn: document.getElementById("removeImageBtn"),
+            imageError: document.getElementById("imageError"),
+
+            videoArea: document.getElementById("videoUploadArea"),
+            videoInput: document.getElementById("videoInput"),
+            videoPreview: document.getElementById("videoPreview"),
+            videoFileName: document.getElementById("videoFileName"),
+            videoFileSize: document.getElementById("videoFileSize"),
+            removeVideoBtn: document.getElementById("removeVideoBtn"),
+            videoError: document.getElementById("videoError"),
+
+            locBuilding: document.getElementById("locBuilding"),
+            buildingField: document.getElementById("buildingField"),
+            locFloor: document.getElementById("locFloor"),
+            locArea: document.getElementById("locArea"),
+            locLandmark: document.getElementById("locLandmark"),
+            locationPreview: document.getElementById("locationPreview"),
+            locationPreviewText: document.getElementById("locationPreviewText"),
+
+            analyzeBtn: document.getElementById("analyzeBtn"),
+            analyzeBtnText: document.getElementById("analyzeBtnText"),
+            aiResultCard: document.getElementById("aiResultCard"),
+            aiDetectedIssue: document.getElementById("aiDetectedIssue"),
+            aiCategoryText: document.getElementById("aiCategoryText"),
+            aiCategorySelect: document.getElementById("aiCategorySelect"),
+            aiSeverityText: document.getElementById("aiSeverityText"),
+            aiSeveritySelect: document.getElementById("aiSeveritySelect"),
+            aiPriorityText: document.getElementById("aiPriorityText"),
+            aiPrioritySelect: document.getElementById("aiPrioritySelect"),
+            aiDepartmentText: document.getElementById("aiDepartmentText"),
+            aiDepartmentSelect: document.getElementById("aiDepartmentSelect"),
+            aiConfidenceText: document.getElementById("aiConfidenceText"),
+            confidenceBarFill: document.getElementById("confidenceBarFill"),
+            editAiBtn: document.getElementById("editAiBtn"),
+            saveAiEditBtn: document.getElementById("saveAiEditBtn"),
+
+            reviewEmptyHint: document.getElementById("reviewEmptyHint"),
+            reviewGrid: document.getElementById("reviewGrid"),
+            reviewTitle: document.getElementById("reviewTitle"),
+            reviewCategory: document.getElementById("reviewCategory"),
+            reviewDescription: document.getElementById("reviewDescription"),
+            reviewLocation: document.getElementById("reviewLocation"),
+            reviewSeverityPriority: document.getElementById("reviewSeverityPriority"),
+            reviewDepartment: document.getElementById("reviewDepartment"),
+            reviewPhoto: document.getElementById("reviewPhoto"),
+            reviewPhotoNone: document.getElementById("reviewPhotoNone"),
+
+            form: document.getElementById("reportForm"),
+            submitBtn: document.getElementById("submitBtn"),
+            submitBtnText: document.getElementById("submitBtnText"),
+            resetFormBtn: document.getElementById("resetFormBtn"),
+
+            formErrorBanner: document.getElementById("formErrorBanner"),
+            formErrorText: document.getElementById("formErrorText"),
+
+            successScreen: document.getElementById("successScreen"),
+            successIssueId: document.getElementById("successIssueId"),
+            successCategory: document.getElementById("successCategory"),
+            successPriority: document.getElementById("successPriority"),
+            successDepartment: document.getElementById("successDepartment"),
+            successDate: document.getElementById("successDate")
+        };
+
+        // Populate the AI category <select> from the same options as the
+        // main category dropdown, so both stay in sync.
+        els.aiCategorySelect.innerHTML = els.category.innerHTML;
+
+
+        /* ==========================================================
+           5. SMALL HELPERS
+           ========================================================== */
+
+        function formatBytes(bytes) {
+            if (bytes < 1024) return `${bytes} B`;
+            if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+            return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+        }
+
+        function showFieldError(fieldEl, show) {
+            fieldEl.classList.toggle("has-error", show);
+        }
+
+        function showFormError(message) {
+            els.formErrorText.textContent = message;
+            els.formErrorBanner.classList.add("show");
+            els.formErrorBanner.scrollIntoView({behavior: "smooth", block: "center"});
+        }
+
+        function clearFormError() {
+            els.formErrorBanner.classList.remove("show");
+        }
+
+        function severityClass(level) {
+            return {
+                Low: "status-low",
+                Medium: "status-medium",
+                High: "status-high",
+                Critical: "status-critical"
+            }[level] || "status-medium";
+        }
+
+        function buildLocationString() {
+            const parts = [];
+            if (els.locBuilding.value.trim()) parts.push(els.locBuilding.value.trim());
+            if (els.locArea.value.trim()) parts.push(els.locArea.value.trim());
+            if (els.locFloor.value.trim()) parts.push(els.locFloor.value.trim());
+            if (els.locLandmark.value.trim()) parts.push(`near ${els.locLandmark.value.trim()}`);
+            return parts.join(", ");
+        }
+
+
+        /* ==========================================================
+           6. CHARACTER COUNTERS + LIVE VALIDATION
+           ========================================================== */
+
+        els.title.addEventListener("input", () => {
+            els.titleCounter.textContent = `${els.title.value.length} / ${TITLE_MAX}`;
+            showFieldError(els.titleField, false);
+            updateAnalyzeButtonState();
+            renderReview();
+        });
+
+        els.description.addEventListener("input", () => {
+            els.descCounter.textContent = `${els.description.value.length} / ${DESC_MAX}`;
+            showFieldError(els.descField, false);
+            updateAnalyzeButtonState();
+            renderReview();
+        });
+
+        els.category.addEventListener("change", () => {
+            showFieldError(els.categoryField, false);
+            state.categorySetByAI = false;
+            els.categoryAiTag.classList.remove("show");
+            renderReview();
+        });
+
+        [els.locBuilding, els.locFloor, els.locArea, els.locLandmark].forEach(input => {
+            input.addEventListener("input", () => {
+                const locationText = buildLocationString();
+                els.locationPreview.classList.toggle("hidden", locationText.length === 0);
+                els.locationPreviewText.textContent = locationText;
+                showFieldError(els.buildingField, false);
+                renderReview();
+            });
+        });
+
+        function updateAnalyzeButtonState() {
+            const ready = els.title.value.trim().length >= TITLE_MIN &&
+                els.description.value.trim().length >= DESC_MIN;
+            els.analyzeBtn.disabled = ready ? false : true;
+        }
+
+
+        /* ==========================================================
+           7. PHOTO UPLOAD (drag & drop + browse + preview + remove)
+           ========================================================== */
+
+        function wireUploadArea({area, input, allowedTypes, maxMB, onFile}) {
+            area.addEventListener("click", () => input.click());
+            area.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") input.click();
+            });
+
+            area.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                area.classList.add("drag-over");
+            });
+            area.addEventListener("dragleave", () => area.classList.remove("drag-over"));
+            area.addEventListener("drop", (e) => {
+                e.preventDefault();
+                area.classList.remove("drag-over");
+                if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            });
+
+            input.addEventListener("change", () => {
+                if (input.files.length) handleFile(input.files[0]);
+            });
+
+            function handleFile(file) {
+                if (!allowedTypes.includes(file.type)) {
+                    onFile.error(`Unsupported file type. Please upload ${allowedTypes.map(t => t.split("/")[1]).join(", ")}.`);
+                    return;
+                }
+                if (file.size > maxMB * 1024 * 1024) {
+                    onFile.error(`File is too large. Maximum size is ${maxMB}MB.`);
+                    return;
+                }
+                onFile.success(file);
+            }
+        }
+
+        wireUploadArea({
+            area: els.imageArea,
+            input: els.imageInput,
+            allowedTypes: ["image/png", "image/jpeg", "image/webp"],
+            maxMB: MAX_IMAGE_MB,
+            onFile: {
+                error(msg) {
+                    els.imageError.textContent = msg;
+                    els.imageError.classList.add("show");
+                },
+                success(file) {
+                    state.imageFile = file;
+                    els.imageError.classList.remove("show");
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        els.imagePreviewThumb.src = e.target.result;
+                        els.imagePreview.classList.add("show");
+                        renderReview();
+                    };
+                    reader.readAsDataURL(file);
+
+                    els.imageFileName.textContent = file.name;
+                    els.imageFileSize.textContent = formatBytes(file.size);
+                }
+            }
+        });
+
+        els.removeImageBtn.addEventListener("click", () => {
+            state.imageFile = null;
+            els.imageInput.value = "";
+            els.imagePreview.classList.remove("show");
+            renderReview();
+        });
+
+        wireUploadArea({
+            area: els.videoArea,
+            input: els.videoInput,
+            allowedTypes: ["video/mp4", "video/webm"],
+            maxMB: MAX_VIDEO_MB,
+            onFile: {
+                error(msg) {
+                    els.videoError.textContent = msg;
+                    els.videoError.classList.add("show");
+                },
+                success(file) {
+                    state.videoFile = file;
+                    els.videoError.classList.remove("show");
+                    els.videoFileName.textContent = file.name;
+                    els.videoFileSize.textContent = formatBytes(file.size);
+                    els.videoPreview.classList.add("show");
+                }
+            }
+        });
+
+        els.removeVideoBtn.addEventListener("click", () => {
+            state.videoFile = null;
+            els.videoInput.value = "";
+            els.videoPreview.classList.remove("show");
+        });
+
+
+        /* ==========================================================
+           8. AI ANALYSIS
+           ========================================================== */
+
+        els.analyzeBtn.addEventListener("click", async () => {
+            clearFormError();
+            els.analyzeBtn.disabled = true;
+            els.analyzeBtnText.textContent = "Analyzing...";
+
+            try {
+                const result = await AIService.analyzeIssue({
+                    title: els.title.value.trim(),
+                    description: els.description.value.trim()
+                });
+
+                state.aiResult = result;
+                applyAiResultToForm(result);
+                renderAiResultCard(result);
+                renderReview();
+
+            } catch (err) {
+                showFormError("AI analysis failed. You can still fill in the details manually and submit.");
+            } finally {
+                els.analyzeBtnText.textContent = "Analyze with AI";
+                els.analyzeBtn.disabled = false;
+            }
+        });
+
+        function applyAiResultToForm(result) {
+            // Auto-fill the main category field, but keep it fully editable.
+            els.category.value = result.category;
+            state.categorySetByAI = true;
+            els.categoryAiTag.classList.add("show");
+        }
+
+        function renderAiResultCard(result) {
+            els.aiResultCard.classList.add("show");
+
+            els.aiDetectedIssue.textContent = result.detectedIssue;
+            els.aiCategoryText.textContent = result.category;
+            els.aiSeverityText.textContent = "";
+            els.aiSeverityText.innerHTML = `<span class="status ${severityClass(result.severity)}">${result.severity}</span>`;
+            els.aiPriorityText.textContent = "";
+            els.aiPriorityText.innerHTML = `<span class="status ${severityClass(result.priority)}">${result.priority}</span>`;
+            els.aiDepartmentText.textContent = result.department;
+            els.aiConfidenceText.textContent = `${result.confidence}% confidence`;
+            els.confidenceBarFill.style.width = `${result.confidence}%`;
+
+            els.aiCategorySelect.value = result.category;
+            els.aiSeveritySelect.value = result.severity;
+            els.aiPrioritySelect.value = result.priority;
+            els.aiDepartmentSelect.value = result.department;
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        els.editAiBtn.addEventListener("click", () => {
+            state.aiEditing = !state.aiEditing;
+            toggleAiEditMode(state.aiEditing);
+        });
+
+        function toggleAiEditMode(editing) {
+            [
+                [els.aiCategoryText, els.aiCategorySelect],
+                [els.aiSeverityText, els.aiSeveritySelect],
+                [els.aiPriorityText, els.aiPrioritySelect],
+                [els.aiDepartmentText, els.aiDepartmentSelect]
+            ].forEach(([text, select]) => {
+                text.classList.toggle("hidden", editing);
+                select.classList.toggle("hidden", !editing);
+            });
+
+            els.saveAiEditBtn.classList.toggle("show", editing);
+            els.editAiBtn.textContent = editing ? "Cancel" : "Edit";
+        }
+
+        els.saveAiEditBtn.addEventListener("click", () => {
+            if (!state.aiResult) return;
+
+            state.aiResult.category = els.aiCategorySelect.value;
+            state.aiResult.severity = els.aiSeveritySelect.value;
+            state.aiResult.priority = els.aiPrioritySelect.value;
+            state.aiResult.department = els.aiDepartmentSelect.value;
+
+            // A manual correction means this is no longer a pure AI
+            // suggestion for the category field either.
+            els.category.value = state.aiResult.category;
+            state.categorySetByAI = false;
+            els.categoryAiTag.classList.remove("show");
+
+            renderAiResultCard(state.aiResult);
+            state.aiEditing = false;
+            toggleAiEditMode(false);
+            renderReview();
+        });
+
+
+        /* ==========================================================
+           9. REVIEW SUMMARY (kept in sync as the user fills the form)
+           ========================================================== */
+
+        function renderReview() {
+            const title = els.title.value.trim();
+            const description = els.description.value.trim();
+            const category = els.category.value;
+            const location = buildLocationString();
+
+            const hasAnything = title || description || category || location;
+
+            els.reviewEmptyHint.classList.toggle("hidden", !!hasAnything);
+            els.reviewGrid.classList.toggle("hidden", !hasAnything);
+
+            if (!hasAnything) return;
+
+            els.reviewTitle.textContent = title || "—";
+            els.reviewCategory.textContent = category || "—";
+            els.reviewDescription.textContent = description || "—";
+            els.reviewLocation.textContent = location || "—";
+
+            if (state.aiResult) {
+                els.reviewSeverityPriority.textContent = `${state.aiResult.severity} / ${state.aiResult.priority}`;
+                els.reviewDepartment.textContent = state.aiResult.department;
+            } else {
+                els.reviewSeverityPriority.textContent = "Not analyzed yet";
+                els.reviewDepartment.textContent = "Not analyzed yet";
+            }
+
+            if (state.imageFile) {
+                els.reviewPhoto.src = els.imagePreviewThumb.src;
+                els.reviewPhoto.classList.remove("hidden");
+                els.reviewPhotoNone.classList.add("hidden");
+            } else {
+                els.reviewPhoto.classList.add("hidden");
+                els.reviewPhotoNone.classList.remove("hidden");
+            }
+        }
+
+
+        /* ==========================================================
+           10. VALIDATION
+           ========================================================== */
+
+        function validateForm() {
+            let valid = true;
+
+            const titleLen = els.title.value.trim().length;
+            if (titleLen < TITLE_MIN || titleLen > TITLE_MAX) {
+                showFieldError(els.titleField, true);
+                valid = false;
+            }
+
+            const descLen = els.description.value.trim().length;
+            if (descLen < DESC_MIN) {
+                showFieldError(els.descField, true);
+                valid = false;
+            }
+
+            if (!els.category.value) {
+                showFieldError(els.categoryField, true);
+                valid = false;
+            }
+
+            if (!els.locBuilding.value.trim()) {
+                showFieldError(els.buildingField, true);
+                valid = false;
+            }
+
+            return valid;
+        }
+
+
+        /* ==========================================================
+           11. SUBMIT
+           ========================================================== */
+
+        els.form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            clearFormError();
+
+            if (state.submitting) return; // prevent duplicate submissions
+
+            if (!validateForm()) {
+                showFormError("Please fix the highlighted fields before submitting.");
+                return;
+            }
+
+            state.submitting = true;
+            els.submitBtn.disabled = true;
+            els.submitBtnText.textContent = "Submitting your report...";
+
+            const severity = state.aiResult ? state.aiResult.severity : "Medium";
+            const priority = state.aiResult ? state.aiResult.priority : "Medium";
+            const department = state.aiResult ? state.aiResult.department : "Campus Administration";
+
+            // Built as FormData because a real submission needs to carry
+            // the image/video files alongside the text fields.
+            const payload = new FormData();
+            payload.append("title", els.title.value.trim());
+            payload.append("description", els.description.value.trim());
+            payload.append("category", els.category.value);
+            payload.append("location", buildLocationString());
+            payload.append("severity", severity);
+            payload.append("priority", priority);
+            payload.append("department", department);
+            if (state.imageFile) payload.append("image", state.imageFile);
+            if (state.videoFile) payload.append("video", state.videoFile);
+            // TODO (backend integration): also append the logged-in
+            // student's userId once the auth session is wired up here,
+            // instead of asking them to re-enter any identifying info.
+
+            try {
+                const response = await ReportService.submitReport(payload);
+
+                els.successIssueId.textContent = response.id;
+                els.successCategory.textContent = els.category.value;
+                els.successPriority.textContent = priority;
+                els.successDepartment.textContent = department;
+                els.successDate.textContent = new Date(response.createdAt).toLocaleDateString("en-IN", {
+                    day: "2-digit", month: "long", year: "numeric"
+                });
+
+                els.form.classList.add("hidden");
+                els.successScreen.classList.add("show");
+                if (window.lucide) lucide.createIcons();
+
+            } catch (err) {
+                showFormError("We couldn't submit your report. Please check your connection and try again.");
+            } finally {
+                state.submitting = false;
+                els.submitBtn.disabled = false;
+                els.submitBtnText.textContent = "Submit Report";
+            }
+        });
+
+
+        /* ==========================================================
+           12. RESET FORM
+           ========================================================== */
+
+        function formHasContent() {
+            return els.title.value.trim() || els.description.value.trim() ||
+                els.locBuilding.value.trim() || state.imageFile || state.videoFile;
+        }
+
+        els.resetFormBtn.addEventListener("click", () => {
+            if (formHasContent()) {
+                const confirmed = window.confirm("This will clear everything you've entered. Continue?");
+                if (!confirmed) return;
+            }
+
+            els.form.reset();
+            state.imageFile = null;
+            state.videoFile = null;
+            state.aiResult = null;
+            state.aiEditing = false;
+            state.categorySetByAI = false;
+
+            els.imagePreview.classList.remove("show");
+            els.videoPreview.classList.remove("show");
+            els.aiResultCard.classList.remove("show");
+            els.categoryAiTag.classList.remove("show");
+            els.locationPreview.classList.add("hidden");
+            els.titleCounter.textContent = `0 / ${TITLE_MAX}`;
+            els.descCounter.textContent = `0 / ${DESC_MAX}`;
+
+            [els.titleField, els.descField, els.categoryField, els.buildingField].forEach(f => showFieldError(f, false));
+
+            clearFormError();
+            updateAnalyzeButtonState();
+            renderReview();
+        });
+
+
+        /* ==========================================================
+           13. PROFILE DROPDOWN (same behaviour as dashboard.html)
+           ========================================================== */
+
+        const profileBtn = document.getElementById("profileBtn");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+        if (profileBtn && dropdownMenu) {
+
+            profileBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const isOpen = dropdownMenu.classList.toggle("show");
+                profileBtn.setAttribute("aria-expanded", String(isOpen));
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!profileBtn.contains(e.target)) {
+                    dropdownMenu.classList.remove("show");
+                    profileBtn.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    </script>
+
+
+</body>
+
+</html>

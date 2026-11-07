@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Terms & Conditions | UniFix LPU</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8f8f8;
+            color: #111;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .page {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* =========================
+           LEFT BRANDING SECTION
+        ========================= */
+
+        .left-section {
+            width: 52%;
+            min-height: 100vh;
+            padding: 45px 65px;
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f2a20 0%,
+                    #744638 45%,
+                    #c18a78 100%
+                );
+
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Logo */
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            background: #ff6b1a;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .brand-text h2 {
+            font-size: 25px;
+            margin-bottom: 3px;
+        }
+
+        .brand-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Main left content */
+
+        .left-content {
+            margin-top: 150px;
+            max-width: 600px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 30px;
+
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+
+            margin-bottom: 30px;
+        }
+
+        .left-content h1 {
+            font-size: 56px;
+            line-height: 1.05;
+            margin-bottom: 25px;
+        }
+
+        .left-content h1 span {
+            color: #ff7a2a;
+        }
+
+        .left-content p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.92);
+            max-width: 560px;
+        }
+
+        /* Bottom */
+
+        .left-footer {
+            position: absolute;
+            bottom: 45px;
+            left: 65px;
+
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .dot {
+            margin: 0 10px;
+        }
+
+
+        /* =========================
+           RIGHT TERMS SECTION
+        ========================= */
+
+        .right-section {
+            width: 48%;
+            background: #ffffff;
+
+            padding: 55px 65px;
+
+            overflow-y: auto;
+        }
+
+        .terms-container {
+            max-width: 720px;
+            margin: auto;
+        }
+
+        .terms-header {
+            margin-bottom: 35px;
+        }
+
+        .terms-header h2 {
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .terms-header p {
+            color: #777;
+            font-size: 15px;
+        }
+
+        .terms-section {
+            margin-bottom: 27px;
+        }
+
+        .terms-section h3 {
+            font-size: 18px;
+            color: #111;
+            margin-bottom: 9px;
+        }
+
+        .terms-section p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .terms-section ul {
+            margin-top: 8px;
+            padding-left: 22px;
+        }
+
+        .terms-section li {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 5px;
+        }
+
+        /* Important box */
+
+        .important {
+            background: #fff4ed;
+            border-left: 4px solid #ff6b1a;
+
+            padding: 16px 18px;
+
+            border-radius: 6px;
+
+            margin: 15px 0 28px;
+        }
+
+        .important p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .important strong {
+            color: #ff6b1a;
+        }
+
+        /* Back button */
+
+        .back-button {
+            display: inline-block;
+
+            margin-top: 5px;
+            margin-bottom: 30px;
+
+            text-decoration: none;
+
+            color: #ff6b1a;
+            font-size: 14px;
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            color: #d94f00;
+        }
+
+        /* Bottom */
+
+        .right-footer {
+            border-top: 1px solid #eee;
+            margin-top: 35px;
+            padding-top: 20px;
+
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            body {
+                overflow: auto;
+            }
+
+            .page {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .left-section {
+                width: 100%;
+                min-height: 480px;
+                padding: 35px 35px;
+            }
+
+            .left-content {
+                margin-top: 100px;
+            }
+
+            .left-content h1 {
+                font-size: 42px;
+            }
+
+            .left-footer {
+                left: 35px;
+                bottom: 30px;
+            }
+
+            .right-section {
+                width: 100%;
+                padding: 40px 30px;
+                overflow: visible;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .left-section {
+                min-height: 430px;
+            }
+
+            .left-content {
+                margin-top: 75px;
+            }
+
+            .left-content h1 {
+                font-size: 36px;
+            }
+
+            .left-content p {
+                font-size: 15px;
+            }
+
+            .terms-header h2 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =========================
+         LEFT SIDE
+    ========================== -->
+
+    <div class="left-section">
+
+        <div class="brand">
+
+            <div class="logo">
+                U
+            </div>
+
+            <div class="brand-text">
+                <h2>UniFix LPU</h2>
+                <p>Smart Campus • Better Experience</p>
+            </div>
+
+        </div>
+
+
+        <div class="left-content">
+
+            <div class="badge">
+                CAMPUS ISSUE REPORTING
+            </div>
+
+            <h1>
+                Building a<br>
+                <span>Better Campus</span>
+            </h1>
+
+            <p>
+                UniFix LPU helps students report campus issues,
+                track their resolution and contribute towards
+                a better university experience for everyone.
+            </p>
+
+        </div>
+
+
+        <div class="left-footer">
+            Lovely Professional University
+            <span class="dot">•</span>
+            26 Years of Excellence
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RIGHT SIDE
+    ========================== -->
+
+    <div class="right-section">
+
+        <div class="terms-container">
+
+            <a href="login.html" class="back-button">
+                ← Back to Login
+            </a>
+
+
+            <div class="terms-header">
+
+                <h2>
+                    Terms & Conditions
+                </h2>
+
+                <p>
+                    Last updated: November 7, 2026
+                </p>
+
+            </div>
+
+
+            <!-- 1 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    1. Purpose of UniFix LPU
+                </h3>
+
+                <p>
+                    UniFix LPU is a campus issue reporting platform designed
+                    to help students report problems related to university
+                    facilities, infrastructure and campus services.
+                </p>
+
+            </div>
+
+
+            <!-- 2 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    2. Acceptable Reports
+                </h3>
+
+                <p>
+                    Students should submit genuine and relevant reports
+                    about problems they observe on the university campus.
+                </p>
+
+                <ul>
+                    <li>Broken or non-working lights and electrical equipment</li>
+                    <li>Damaged roads, pathways or infrastructure</li>
+                    <li>Broken benches, desks or campus facilities</li>
+                    <li>Cleanliness and waste-related problems</li>
+                    <li>Water supply or sanitation issues</li>
+                    <li>Other genuine campus-related problems</li>
+                </ul>
+
+            </div>
+
+
+            <!-- 3 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    3. False or Misleading Reports
+                </h3>
+
+                <p>
+                    Users must not submit false, fake, misleading or
+                    deliberately incorrect information. Reports should
+                    describe a real issue as accurately as possible.
+                </p>
+
+            </div>
+
+
+            <!-- 4 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    4. Prohibited Content
+                </h3>
+
+                <p>
+                    Users must not upload or submit content that is abusive,
+                    threatening, offensive, inappropriate or unrelated to
+                    the purpose of the platform.
+                </p>
+
+                <ul>
+                    <li>No harassment of students, faculty or staff.</li>
+                    <li>No personal disputes disguised as campus reports.</li>
+                    <li>No intentionally offensive or inappropriate content.</li>
+                    <li>No attempts to damage or disrupt the platform.</li>
+                </ul>
+
+            </div>
+
+
+            <!-- Important -->
+
+            <div class="important">
+
+                <p>
+                    <strong>Important:</strong>
+                    Submitting a report does not guarantee that the issue
+                    will be immediately repaired or resolved. Reports may
+                    need to be reviewed and verified by the appropriate
+                    university authority.
+                </p>
+
+            </div>
+
+
+            <!-- 5 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    5. Photos and Supporting Evidence
+                </h3>
+
+                <p>
+                    If users upload photographs or other supporting evidence,
+                    the content should be relevant to the reported issue.
+                    Users should avoid sharing unnecessary personal or
+                    sensitive information about other individuals.
+                </p>
+
+            </div>
+
+
+            <!-- 6 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    6. Review of Reports
+                </h3>
+
+                <p>
+                    Submitted reports may be reviewed by the responsible
+                    team or university authority. The platform does not
+                    guarantee a particular outcome, response time or
+                    resolution for every report.
+                </p>
+
+            </div>
+
+
+            <!-- 7 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    7. User Responsibility
+                </h3>
+
+                <p>
+                    Users are responsible for the information they provide.
+                    By submitting a report, users agree that the information
+                    provided should be accurate to the best of their knowledge.
+                </p>
+
+            </div>
+
+
+            <!-- 8 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    8. Privacy
+                </h3>
+
+                <p>
+                    Users should provide only the information required for
+                    submitting and handling a report. Any personal information
+                    collected by the platform should be handled according to
+                    the applicable privacy practices and policies.
+                </p>
+
+            </div>
+
+
+            <!-- 9 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    9. Changes to These Terms
+                </h3>
+
+                <p>
+                    These Terms & Conditions may be updated when necessary
+                    to improve the platform or reflect changes to its
+                    features and policies.
+                </p>
+
+            </div>
+
+
+            <!-- 10 -->
+
+            <div class="terms-section">
+
+                <h3>
+                    10. Acceptance of Terms
+                </h3>
+
+                <p>
+                    By using UniFix LPU and submitting a report, you
+                    acknowledge that you have read and understood these
+                    Terms & Conditions and agree to follow them.
+                </p>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="right-footer">
+
+                © 2026 UniFix LPU • Smart Campus • Better Experience
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
